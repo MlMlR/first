@@ -9,7 +9,7 @@ body {
 }
 
 #game-board {
-    background-color: #CCC;
+    background-color: #fecd1a;
     width: 100vmin;
     height: 100vmin;
     display: grid;
@@ -18,11 +18,20 @@ body {
 }
 
 .snake {
-    background-color: hsl(200, 100%, 50%);
-    border: .25vmin solid black;
+    background-color: #D9261C;
+    background-image: url("images/bertschilogo.ico");
+    background-size: cover;
+
+}
+
+.bug {
+    background-image: url("images/bug.ico");
+    background-size: cover;
+
 }
 
 .food {
-    background-color: hsl(50, 100%, 50%);
-    border: .25vmin solid black;
+
+    background-image: url("images/Container.ico");
+    background-size: cover;
 }
