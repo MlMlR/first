@@ -1,0 +1,35 @@
+version: '3'
+services:
+  db:
+    image: "library/mariadb:10.2.32"
+    environment:
+      MYSQL_DATABASE: main
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Europe/Zurich
+    ports:
+      - "3366:3306"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+        max-file: "4"
+    command: mysqld --innodb-buffer-pool-size=2G
+      --innodb-log-file-size=1G
+      --innodb-log-buffer-size=64M
+      --max-allowed-packet=64M
+    volumes:
+      - "./init:/docker-entrypoint-initdb.d"
+  #      - "./.mysql-data:/var/lib/mysql"
+  php:
+    image: "dr.b3r.li/php7-apache"
+    environment:
+      OPCACHE_ENABLE: 0
+    volumes:
+      - "./:/var/www/html/"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "2m"
+        max-file: "4"
+    ports:
+      - "8080:80"

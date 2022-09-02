@@ -28,7 +28,7 @@ $dbname = "main";
 <header>
     <nav class="topnav">
         <a href="/">Home</a>
-        <a href="/src/snake/index.html">snake</a>
+        <a href="/src/snakeX/">snake</a>
         <a class="active" href="index.php">Container</a>
     </nav>
 </header>
@@ -49,14 +49,24 @@ $dbname = "main";
             <div>
                 <h2>Add Container</h2>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                    <label for="nr">Container Nr.</label>
-                    <br>
-                    <input type="text" id="nr" name="nr" placeholder="DIDU-060005 3" >
-                    <br>
-                    <label for="size">Size</label>
-                    <br>
-                    <input type="number" id="size" name="size" value="33" >
-                    <br>
+                    <label for="nr">Container Nr.</label><br>
+                    <input type="text" id="nr" name="nr" placeholder="DIDU-060005 3" ><br>
+                    <label for="type">Type</label><br>
+                    <select  id="type" name="type" >
+                        <option>Dry Storage</option>
+                        <option>ISO Tank</option>
+                        <option>Open Top</option>
+                        <option>Special Purpose</option>
+                    </select><br>
+                    <label for="size">Size</label><br>
+                    <input type="number" id="size" name="size" value="33" ><br>
+                    <label for="position">Position</label><br>
+                    <select  id="position" name="position" >
+                        <option>Dürrenäsch</option>
+                        <option>on Road</option>
+                        <option>Singapore</option>
+                        <option>Helsinki</option>
+                    </select><br>
                     <input type="submit" value="Submit" name="submit">
                 </form>
             </div>
@@ -66,13 +76,16 @@ $dbname = "main";
             if(isset($_POST['nr'])){
                 $size = $_POST['size'];
                 $nr = $_POST['nr'];
+                $owner = "Bertschi";
+                $containerType = $_POST['type'];
+                $containerPosition = $_POST['position'];
                 $patterns = array('/ /', '/-/', '/_/', '/,/', '/:/');
                 $nr = preg_replace($patterns, "", $nr);
                 $container = substr($nr,0, 11);
 
                 if(Container::hasValidCode($container))
                 {
-                    Container::addToDb($container, $size);
+                    Container::addToDb($container, $size, $owner, $containerType, $containerPosition );
                 }else {
                     echo "<p><mark>". $nr ." is <b>not</b> a valid BIC Code!</mark></p>";
                 }
@@ -80,11 +93,21 @@ $dbname = "main";
             ?>
             <hr>
             <div>
-                <h2>Create Container</h2>
+                <h2>Container Factory</h2>
+                <h3>Build Container</h3>
                 <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
-                    <label for="owner">Owner (3 letter code)</label>
+                    <label for="owner">Owner</label>
                     <br>
-                    <input type="text" id="owner" name="owner" pattern="[A-Za-z]{3}" placeholder="BDUE" required>
+                    <input type="text" id="owner" name="owner" placeholder="Bertschi Dürenäsch" required>
+                    <br>
+                    <label for="type">Type</label>
+                    <br>
+                    <select  id="type" name="type" >
+                        <option>Dry Storage</option>
+                        <option>ISO Tank</option>
+                        <option>Open Top</option>
+                        <option>Special Purpose</option>
+                    </select>
                     <br>
                     <label for="size">Size</label>
                     <br>
@@ -96,10 +119,23 @@ $dbname = "main";
 
                 if(isset($_POST['owner']))
                 {
-                    $owner = strtoupper($_POST['owner']);
+                    $owner = ($_POST['owner']);
                     $size = $_POST['size'];
-                    $container =  Container::numberGenerator($owner);
-                    Container::addToDb($container, $size);
+                    $containerType = $_POST["type"];
+                    $containerPosition = "Container Factory";
+                    $ownerCode = "";
+                    $owner = trim($owner);
+                    if(strpos($owner, " "))
+                    {
+                        $arr = explode(" ",strtoupper($owner));
+                        $ownerCode .= substr($arr[0],0,2);
+                        $ownerCode .= substr($arr[1],0,1);
+                    } else {
+                        $ownerCode .= substr(strtoupper($owner), 0, 3);
+                    }
+
+                    $container =  Container::numberGenerator($ownerCode);
+                    Container::addToDb($container, $size, $owner, $containerType, $containerPosition );
                 }
 
                 ?>
@@ -109,7 +145,7 @@ $dbname = "main";
 
 
 
-        <div class="col-3" id="stockList">
+        <div class="col-6" id="stockList">
             <h2>In Stock</h2>
 
             <?php
@@ -131,7 +167,7 @@ $dbname = "main";
                 }
             }
             echo "<table style='border: solid 1px black;'>";
-            echo "<tr><th>Container</th><th>Size</th></tr>";
+            echo "<tr><th>Container</th><th>Size</th><th>Owner</th><th>Type</th><th>Position</th></tr>";
 
             try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

@@ -31,30 +31,35 @@ class Container
         }
 
 
-        if ($check == $characters[10]) {
+        if ($check === $characters[10]) {
             return true;
         }
         return false;
 
     }
 
-    public static function addToDb($container, $size)
+    public static function addToDb($container, $size, $owner, $containerType, $containerPosition)
     {
         $servername = "db";
         $username = "root";
         $password = "root";
         $dbname = "main";
         {
+            $query = "INSERT INTO container_management (code, size, owner, type, position) 
+                      VALUES (:container , :size, :owner, :type, :position)";
             try {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 // set the PDO error mode to exception
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $query = "INSERT INTO container_management (code, size) VALUES (:container , :size)";
+
 
                 // use exec() because no results are returned
                 $stmt = $conn->prepare($query);
                 $stmt->bindValue(":container", $container);
                 $stmt->bindValue(":size", $size);
+                $stmt->bindValue(":owner", $owner);
+                $stmt->bindValue(":type", $containerType);
+                $stmt->bindValue(":position", $containerPosition);
                 if(!$stmt->execute()){
                     echo $conn->errorInfo();
                     return false;
