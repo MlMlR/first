@@ -1,37 +1,23 @@
 
-<!DOCTYPE HTML>
-<html lang="en">
+<link rel="stylesheet" href="../style/style.css">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <title>Containerterminal1</title>
-    <link rel="stylesheet" href="/src/containernumber/ContainerStyle.css">
-</head>
-
-<body>
 
 <?php
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
-include_once('Container.php');
+
+include_once('../autoloader.php');
+include_once('../header.php');
+echo "<br>";
+echo "<br>";
+use App\apps\Dispo\Container\ContainerDb;
+use App\apps\Util\TableRows;
+
 $servername = "db";
 $username = "root";
 $password = "root";
 $dbname = "main";
 ?>
-
-
-<header>
-    <nav class="topnav">
-        <a href="/">Home</a>
-        <a href="/src/snakeX/">snake</a>
-        <a class="active" href="index.php">Container</a>
-    </nav>
-</header>
 
 
 
@@ -85,7 +71,8 @@ $dbname = "main";
 
                 if(Container::hasValidCode($container))
                 {
-                    Container::addToDb($container, $size, $owner, $containerType, $containerPosition );
+                    $pdo = new ContainerDb();
+                    $pdo->addToDb($container, $size, $owner, $containerType, $containerPosition );
                 }else {
                     echo "<p><mark>". $nr ." is <b>not</b> a valid BIC Code!</mark></p>";
                 }
@@ -149,23 +136,7 @@ $dbname = "main";
             <h2>In Stock</h2>
 
             <?php
-            class TableRows extends RecursiveIteratorIterator {
-                function __construct($it) {
-                    parent::__construct($it, self::LEAVES_ONLY);
-                }
 
-                function current() {
-                    return "<td style='width: 150px; border: 1px solid black;'>" . parent::current(). "</td>";
-                }
-
-                function beginChildren() {
-                    echo "<tr>";
-                }
-
-                function endChildren() {
-                    echo "</tr>" . "\n";
-                }
-            }
             echo "<table style='border: solid 1px black;'>";
             echo "<tr><th>Container</th><th>Size</th><th>Owner</th><th>Type</th><th>Position</th></tr>";
 

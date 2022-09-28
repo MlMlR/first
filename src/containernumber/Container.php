@@ -47,7 +47,8 @@ class Container
         {
             $query = "INSERT INTO container_management (code, size, owner, type, position) 
                       VALUES (:container , :size, :owner, :type, :position)";
-            try {
+            try
+            {
                 $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
                 // set the PDO error mode to exception
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

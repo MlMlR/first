@@ -25,7 +25,7 @@ services:
     environment:
       OPCACHE_ENABLE: 0
     volumes:
-      - "./:/var/www/html/"
+      - "./src:/var/www/html/"
     logging:
       driver: "json-file"
       options:

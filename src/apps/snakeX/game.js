@@ -14,7 +14,7 @@ const gameBoard = document.getElementById('game-board')
 function main(currentTime){
     if (gameOver){
         if (confirm(gameOverMessage)){
-            window.location = "/src/snakeX"
+            window.location = ""
         }
         return
     }

@@ -1,0 +1,1 @@
+<h1>Fuck an error occurred</h1>
