@@ -25,8 +25,6 @@ class UserDatabase extends AbstractDatabase
     function getUsers(){
         $model = $this->getModel();
         if (!empty( $this->pdo)){
-            var_dump($this->pdo);
-
             $users =  $this->pdo->prepare("SELECT * FROM `users`");
             $users->execute();
             $users->setFetchMode(PDO::FETCH_CLASS, $model);
@@ -40,20 +38,21 @@ class UserDatabase extends AbstractDatabase
 #Einträge in die Datenbank speichern
     function newUser($firstName, $lastName, $username, $email, $password){
         if (!empty( $this->pdo)){
-            $stmt =  $this->pdo->prepare("INSERT INTO 'users' ('firstname', 'lastname' ,'username', 'mail', 'password')" .
+            $stmt =  $this->pdo->prepare("INSERT INTO `users` (firstname, lastname ,username, mail, password)" .
                 " VALUES (:firstname,:lastname,:username, :mail, :password)");
             $stmt->bindValue(":firstname", $firstName);
             $stmt->bindValue(":lastname", $lastName);
             $stmt->bindValue(":username", $username);
             $stmt->bindValue(":mail", $email);
             $stmt->bindValue(":password", $password);
+            echo "fuck ";
             $stmt->execute();
         }
     }
 
     function newStayIn($userid, $identifier, $securitytoken){
         if (!empty( $this->pdo)){
-            $stmt =  $this->pdo->prepare("INSERT INTO `securitytokens` ('userid', 'identifier', 'securitytoken') VALUES (:userid, :identifier, :securitytoken)");
+            $stmt =  $this->pdo->prepare("INSERT INTO `securitytokens` (userid, identifier, securitytoken) VALUES (:userid, :identifier, :securitytoken)");
             $stmt->bindValue(":userid", $userid);
             $stmt->bindValue(":identifier", $identifier);
             $stmt->bindValue(":securitytoken", $securitytoken);

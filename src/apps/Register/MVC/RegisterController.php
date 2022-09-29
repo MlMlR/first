@@ -32,8 +32,10 @@ class RegisterController extends AbstractController
         } catch (\Exception $e) {
             echo "token gone wrong";
         }
-
         $this->userDatabase->newStayIn($userid, $identifier, password_hash($securityToken, PASSWORD_DEFAULT));
+
+        setcookie("identifier", $identifier, time() + (3600*24*356));
+        setcookie("securityToken", $securityToken, time() + (3600*24*356));
     }
 
 
@@ -53,6 +55,7 @@ class RegisterController extends AbstractController
             $user = $this->userDatabase->getUser("",$email);
             $hash = $user->password;
             $userid = $user->userid;
+            $username = $user->username;
 
             if ($this->loginAuthenticator->checkLogin($password, $hash))
             {
@@ -62,6 +65,8 @@ class RegisterController extends AbstractController
                 }
 
                 session_regenerate_id(true);
+
+                $_SESSION["username"] = $username;
                 $_SESSION["userid"] = $userid;
                 $_SESSION["login"] = true;
 

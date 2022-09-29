@@ -4,6 +4,8 @@ session_start();
 var_dump($_SESSION);
 echo "<br>";
 var_dump(session_id());
+echo "<br>";
+var_dump($_COOKIE);
 
 require_once "header.php";
 require_once "init.php";
@@ -36,8 +38,11 @@ switch ($request)
     case "Register":
         $router->add("registerController", "action");
         break;
-        case "Logout":
+    case "Logout":
         $router->add("registerController", "logout");
+        break;
+    case "PhotoAlbum":
+        $router->add("AlbumController", "displayAlbum");
         break;
     default:
         $router->add("errorController", "errorPage");

@@ -5,6 +5,8 @@ namespace App\apps\Util;
 use App\apps\Connections\ConMySQL;
 use App\apps\Error\MVC\ErrorController;
 use App\apps\Home\MVC\HomeController;
+use App\apps\PhotoAlbum\AlbumDatabase;
+use App\apps\PhotoAlbum\MVC\AlbumController;
 use App\apps\Register\MVC\LoginAuthenticator;
 use App\apps\Register\MVC\RegisterController;
 use App\apps\Register\SecurityLoginDatabase;
@@ -19,6 +21,14 @@ class Container {
     public function __construct(){
 
         $this->builds = array(
+            'AlbumController' => function()
+            {
+                return new AlbumController($this->build("Albumdatabase"));
+            },
+            'Albumdatabase' => function()
+            {
+                return new AlbumDatabase($this->build('pdo'));
+            },
             'router' => function()
             {
                 return new Router($this->build("container"));
