@@ -39,7 +39,13 @@ class UserController extends AbstractController {
     {
         if ($_SESSION['login'])
         {
-        $this->pageload("User", "userDashboard", []);
+            $userid = $_SESSION["userid"];
+            $user = $this->userDatabase->getUser($userid, '');
+
+            $this->pageload("User", "userDashboard", [
+                "user" => $user
+
+            ]);
         }
         else
         {

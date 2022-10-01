@@ -1,11 +1,7 @@
 <?php
 
 session_start();
-var_dump($_SESSION);
-echo "<br>";
-var_dump(session_id());
-echo "<br>";
-var_dump($_COOKIE);
+
 
 require_once "header.php";
 require_once "init.php";
@@ -23,29 +19,53 @@ if (empty($_GET["App"])){
 switch ($request)
 {
     case "Home":
-        echo
         $router->add("homeController", "home");
         break;
+
     case "Users":
         $router->add("userController", "allUsers");
         break;
+
     case "UserDashboard":
         $router->add("userController", "userDashboard");
         break;
+
     case "User":
         $router->add("userController", "userprofile");
         break;
+
     case "Register":
         $router->add("registerController", "action");
         break;
+
     case "Logout":
         $router->add("registerController", "logout");
         break;
-    case "PhotoAlbum":
-        $router->add("AlbumController", "displayAlbum");
+
+    case "PhotoAlbums":
+        $router->add("AlbumController", "displayAlbums");
         break;
+
+    case "Album":
+        $router->add("AlbumController", "album");
+        break;
+
+    case "AlbumSettings":
+        $router->add("AlbumController", "albumSettings");
+        break;
+
+    case "AlbumSettings-update":
+        $router->add("AlbumController", "AjaxNewAlbumSettingsFunction");
+        $router->add("AlbumController", "AjaxAlbumSettingsForm");
+        break;
+
+    case "Alben-newAlbum":
+        $router->add("AlbumController", "AjaxNewAlbumFunction");
+        $router->add("AlbumController", "AjaxPageFotoAlben");
+        break;
+
     default:
         $router->add("errorController", "errorPage");
 }
 
-include "footer.php";
+require_once "footer.php";
