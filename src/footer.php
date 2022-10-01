@@ -9,7 +9,7 @@
     <br>
     <br>
     <div class="container">
-        <img src="style/Media/2022-09-28%2022_30_47-Bertschi.png" alt="Logo" class="d-inline-block align-text-top">
+        <img src="style/Media/ring.png" alt="Logo" class="d-inline-block align-text-top">
         <h5><b>Web</b></h5>
         <br>
         <br>

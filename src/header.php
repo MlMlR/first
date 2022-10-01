@@ -22,15 +22,15 @@
 
 <header>
   <div class="topnav">
-    <a class="active" href="/">Home</a>
-    <a href="/apps/snakeX">snake</a>
-    <a href="/containernumber">container</a>
-    <a href="/?App=Dispo">Dispo</a>
-    <a href="/?App=Users">User</a>
-    <a href="/?App=Error">Error</a>
-    <a href="/?App=Register">Sign in</a>
-    <a href="/?App=UserDashboard">User Dashboard</a>
-    <a href="/?App=Logout">logout</a>
+    <a class="active" href="/">MIDDLE-EARTH</a>
+    <a href="/apps/snakeX">Arnor</a>
+    <a href="/containernumber">Gondor</a>
+    <a href="/?App=Dispo">Mordor</a>
+    <a href="/?App=Users">Creatures</a>
+    <a href="/?App=Error">Rohan</a>
+    <a href="/?App=Register">join</a>
+    <a href="/?App=UserDashboard">my home</a>
+    <a href="/?App=Logout">go</a>
 
   </div>
 </header>

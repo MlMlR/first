@@ -32,7 +32,6 @@ class SecurityLoginDatabase extends AbstractDatabase
             echo $securitytoken . "<br>";
 
             $stmt->execute();
-            echo "fuck";
 
         }
     }

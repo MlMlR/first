@@ -45,7 +45,6 @@ class UserDatabase extends AbstractDatabase
             $stmt->bindValue(":username", $username);
             $stmt->bindValue(":mail", $email);
             $stmt->bindValue(":password", $password);
-            echo "fuck ";
             $stmt->execute();
         }
     }
@@ -60,10 +59,7 @@ class UserDatabase extends AbstractDatabase
             echo $userid . "<br>";
             echo $identifier . "<br>";
             echo $securitytoken . "<br>";
-            echo "fuck ";
             $stmt->execute();
-            echo "after fuck";
-
         }
     }
 

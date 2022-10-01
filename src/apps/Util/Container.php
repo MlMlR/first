@@ -7,6 +7,9 @@ use App\apps\Error\MVC\ErrorController;
 use App\apps\Home\MVC\HomeController;
 use App\apps\PhotoAlbum\AlbumDatabase;
 use App\apps\PhotoAlbum\MVC\AlbumController;
+use App\apps\PHPMailer\Exception;
+use App\apps\PHPMailer\PHPMailer;
+use App\apps\PHPMailer\SMTP;
 use App\apps\Register\MVC\LoginAuthenticator;
 use App\apps\Register\MVC\RegisterController;
 use App\apps\Register\SecurityLoginDatabase;
@@ -53,7 +56,11 @@ class Container {
             {
                 return new RegisterController(
                     $this->build("userDatabase"),
-                    $this->build("loginAuthenticator"));
+                    $this->build("loginAuthenticator"),
+                    $this->build("exception"),
+                    $this->build("PHPMailer"),
+                    $this->build("SMTP")
+                );
             },
             'securityLoginDatabase' => function()
             {
@@ -62,6 +69,18 @@ class Container {
             'loginAuthenticator' => function()
             {
                 return new LoginAuthenticator();
+            },
+            'exception' => function()
+            {
+                return new Exception();
+            },
+            'PHPMailer' => function()
+            {
+                return new PHPMailer();
+            },
+            'SMTP' => function()
+            {
+                return new SMTP();
             },
             'userDatabase' => function()
             {
