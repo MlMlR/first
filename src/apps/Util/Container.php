@@ -3,6 +3,8 @@
 namespace App\apps\Util;
 
 use App\apps\Connections\ConMySQL;
+use App\apps\crate\CrateDatabase;
+use App\apps\crate\MVC\CrateController;
 use App\apps\Error\MVC\ErrorController;
 use App\apps\Home\MVC\HomeController;
 use App\apps\PhotoAlbum\AlbumDatabase;
@@ -51,6 +53,14 @@ class Container {
             'userController' => function()
             {
                 return new UserController($this->build("userDatabase"));
+            },
+            'crateController' => function()
+            {
+                return new CrateController($this->build("crateDatabase"));
+            },
+            'crateDatabase' => function()
+            {
+                return new CrateDatabase($this->build('pdo'));
             },
             'registerController' => function()
             {

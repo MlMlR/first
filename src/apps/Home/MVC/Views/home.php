@@ -6,7 +6,8 @@
             <ol>
                 <li>dispo</li>
                 <li>snake</li>
-                <a href='https://www.youtube.com/watch?v=Rs_rAxEsAv'><li>car</li></a>
+                <li><a href='https://www.youtube.com/watch?v=Rs_rAxEsAvI&t=6687s' target="_blank">car</a></li>
+                <li><a href='https://www.youtube.com/watch?v=Y-GkMjUZsmM' target="_blank">x</a></li>
             </ol>
         </li>
         <li>end list</li>

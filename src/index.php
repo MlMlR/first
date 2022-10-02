@@ -22,6 +22,14 @@ switch ($request)
         $router->add("homeController", "home");
         break;
 
+    case "crateMill":
+        $router->add("crateController", "viewCrateMill");
+        break;
+
+    case "crates":
+        $router->add("crateController", "crates");
+        break;
+
     case "Users":
         $router->add("userController", "allUsers");
         break;

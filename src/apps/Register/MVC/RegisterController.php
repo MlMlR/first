@@ -103,7 +103,7 @@ class RegisterController extends AbstractController
             $user = $this->userDatabase->getUser('',$email);
             if (empty($user))
             {
-                //$this->userDatabase->newUser($firstName, $lastName, $username, $email, $password);
+                $this->userDatabase->newUser($firstName, $lastName, $username, $email, $password);
 
                 try {
                     //Server settings
@@ -112,7 +112,7 @@ class RegisterController extends AbstractController
                     $this->PHPMailer->Host       = 'smtp.gmail.com';            //Set the SMTP server to send through
                     $this->PHPMailer->SMTPAuth   = true;                        //Enable SMTP authentication
                     $this->PHPMailer->Username   = 'php.sauron@gmail.com';      //SMTP username
-                    $this->PHPMailer->Password   = '';          //SMTP password
+                    $this->PHPMailer->Password   = 'grqfkhfupqupobft';          //SMTP password
                     $this->PHPMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
                     $this->PHPMailer->Port       = 587;                         //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
@@ -127,7 +127,7 @@ class RegisterController extends AbstractController
                     $this->PHPMailer->Subject = 'Here is the subject';
                     $this->PHPMailer->Body    = 'This is the HTML message body <b>in bold!</b>';
                     $this->PHPMailer->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
+                    var_dump($this->PHPMailer);
                     $this->PHPMailer->send();
                     echo 'Message has been sent';
                 } catch (Exception $e) {

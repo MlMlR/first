@@ -3,7 +3,7 @@
     <br>
     <?php
     if (!empty($user)) : ?>
-        <h1 >welcom at <?php echo $user->username ?></h1>
+        <h1 >wellcom at <?php echo $user->username ?></h1>
         <br>
         <hr>
     <br>
