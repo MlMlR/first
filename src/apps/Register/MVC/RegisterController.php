@@ -111,23 +111,22 @@ class RegisterController extends AbstractController
                     $this->PHPMailer->isSMTP();                                 //Send using SMTP
                     $this->PHPMailer->Host       = 'smtp.gmail.com';            //Set the SMTP server to send through
                     $this->PHPMailer->SMTPAuth   = true;                        //Enable SMTP authentication
-                    $this->PHPMailer->Username   = 'php.sauron@gmail.com';      //SMTP username
-                    $this->PHPMailer->Password   = 'grqfkhfupqupobft';          //SMTP password
+                    $this->PHPMailer->Username   = 'php.xxx@gmail.com';      //SMTP username
+                    $this->PHPMailer->Password   = 'xxx';          //SMTP password
                     $this->PHPMailer->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; //Enable implicit TLS encryption
                     $this->PHPMailer->Port       = 587;                         //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
                     //Recipients
-                    $this->PHPMailer->setFrom('php.sauron@gmail.com', 'Sauron');
-                    $this->PHPMailer->addAddress('php.sauron@gmail.com', "$username"); //Name is optional
-                    $this->PHPMailer->addReplyTo('php.sauron@gmail.com', 'Information');
-                    $this->PHPMailer->addCC('php.sauron@gmail.com');
+                    $this->PHPMailer->setFrom('php.xxx@gmail.com', 'Sauron');
+                    $this->PHPMailer->addAddress('php.xxx@gmail.com', "$username"); //Name is optional
+                    $this->PHPMailer->addReplyTo('php.xxx@gmail.com', 'Information');
+                    $this->PHPMailer->addCC('php.xxx@gmail.com');
 
                     //Content
                     $this->PHPMailer->isHTML(true);            //Set email format to HTML
                     $this->PHPMailer->Subject = 'Here is the subject';
                     $this->PHPMailer->Body    = 'This is the HTML message body <b>in bold!</b>';
                     $this->PHPMailer->AltBody = 'This is the body in plain text for non-HTML mail clients';
-                    var_dump($this->PHPMailer);
                     $this->PHPMailer->send();
                     echo 'Message has been sent';
                 } catch (Exception $e) {

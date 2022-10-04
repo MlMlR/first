@@ -1,5 +1,4 @@
-<br>
-<br>
+
 <div class="container col col-6">
     <h1>Sign in</h1>
     <br>
