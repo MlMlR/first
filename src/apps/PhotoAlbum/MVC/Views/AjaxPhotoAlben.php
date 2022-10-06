@@ -1,7 +1,7 @@
 
 <?php foreach ($alben as $album): ?>
     <div class="card col col-4">
-        <img style="width: 100px; margin: auto; padding: 10px" src="../../../../uploadFiles/<?php echo $album->albumcover; ?>" class="card-img-top" alt="...">
+        <img style="height: 100px; width: auto; margin: auto; padding: 10px" src="../../../../uploadFiles/<?php echo $album->albumcover; ?>" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title"><?php echo html($album->albumname); ?></h5>
             <p class="card-text"><?php echo html($album->albumdescription); ?></p>

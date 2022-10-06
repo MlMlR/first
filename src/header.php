@@ -20,16 +20,4 @@
 
 <body>
 
-<header>
-  <div class="topnav">
-    <a class="active" href="/">MIDDLE-EARTH</a>
-    <a href="/apps/snakeX">Arnor</a>
-    <a href="/?App=Dispo">Mordor</a>
-    <a href="/?App=Users">Creatures</a>
-    <a href="/?App=crateMill">Mill</a>
-    <a href="/?App=Register">join</a>
-    <a href="/?App=UserDashboard">my home</a>
-    <a href="/?App=Logout">go</a>
 
-  </div>
-</header>

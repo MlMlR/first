@@ -31,6 +31,21 @@ class CrateDatabase extends AbstractDatabase
         return false;
     }
 
+    function getCrate($code){
+        $model = $this->getModel();
+
+        if (!empty( $this->pdo)){
+            $crate =  $this->pdo->prepare("SELECT * FROM `container_management` WHERE code = :code");
+            $crate->bindValue(":code", $code);
+            $crate->execute();
+            $crate->setFetchMode(PDO::FETCH_CLASS, $model);
+            $cratedata = $crate->fetch();
+            return $cratedata;
+
+        }
+        return false;
+    }
+
     function newCrate($code, $size, $owner, $crateType, $cratePosition){
         if (!empty( $this->pdo)){
             $stmt =  $this->pdo->prepare("INSERT INTO container_management (code, size, owner, type, position) 
@@ -40,6 +55,17 @@ class CrateDatabase extends AbstractDatabase
             $stmt->bindValue(":owner", $owner);
             $stmt->bindValue(":type", $crateType);
             $stmt->bindValue(":position", $cratePosition);
+            $stmt->execute();
+        }
+    }
+
+    public function updateCrate($value, $column, $code)
+    {
+        if (!empty( $this->pdo)){
+            $query ="UPDATE container_management SET $column = :value WHERE code = :code LIMIT 1";
+            $stmt =  $this->pdo->prepare($query);
+            $stmt->bindValue(":value", $value);
+            $stmt->bindValue(":code", $code);
             $stmt->execute();
         }
     }

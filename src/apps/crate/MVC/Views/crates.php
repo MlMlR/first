@@ -1,45 +1,28 @@
+<div class="container" id="table-container">
 
-<br>
-<br>
+    <?php require_once "cratetable.php";?>
+
+
+</div>
+
+
 
 <div class="container">
-    <h1>Crates</h1>
-    <br>
-    <table class="table table-striped table-hover">
-        <thead>
-        <tr>
-            <th scope="col">crate</th>
-            <th scope="col">type</th>
-            <th scope="col">size</th>
-            <th scope="col">owner</th>
-            <th scope="col">position</th>
-        </tr>
-        </thead>
-        <tbody>
-        <?php foreach ($crates as $crate): ?>
-            <tr>
-            <th scope="row"><?php echo $crate->code; ?></th>
-            <td><?php echo $crate->type; ?></td>
-            <td><?php echo $crate->size; ?></td>
-            <td><?php echo $crate->owner; ?></td>
-            <td><?php echo $crate->position; ?></td>
-        </tr>
-        <?php endforeach; ?>
-        </tbody>
-    </table>
+
+
     <br>
     <div class="row align-items-start">
         <?php foreach ($crates as $crate): ?>
         <div class="col col-3 mt-4">
             <div class="card">
-                <img style="width: 100px; margin: auto; padding: 10px" src="../../../../style/Media/<?php echo $crate->type; ?>.png" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <h2 class="card-title"><?php echo $crate->code; ?></h2>
+                <img style="height: 100px; width: auto; margin: auto; padding: 10px" src="../../../../style/Media/<?php echo $crate->type; ?>.png" class="card-img-top" alt="...">
+                <div  class="card-body">
+                    <h2  class="card-title"><?php echo $crate->code; ?></h2>
                     <p class="card-text"><?php echo $crate->type; ?></p>
                     <p class="card-text"><?php echo $crate->size; ?> feet</p>
-                    <p class="card-text">belongs to</p>
+                    <p class="card-text">belongs to:</p>
                     <p class="card-text"><?php echo $crate->owner; ?></p>
-                    <p class="card-text">is currently</p>
+                    <p class="card-text">is currently:</p>
                     <p class="card-text"><?php echo $crate->position; ?></p>
                 </div>
             </div>
@@ -98,3 +81,5 @@
         <p style="color: crimson"><?php echo $message;?></p>
     </form>
 </div>
+
+<script src="../../../../apps/crate/MVC/AjaxCrates/AjaxUpdateCrateTable.js"></script>

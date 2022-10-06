@@ -1,9 +1,4 @@
 
-    <br>
-    <br>
-    <br>
-
-    <br>
     <?php include_once "user.php"?>
     <br>
     <br>

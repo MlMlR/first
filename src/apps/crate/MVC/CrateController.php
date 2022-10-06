@@ -56,14 +56,22 @@ class CrateController extends AbstractController
             $code = preg_replace($patterns, "", $code);
             $crate = substr($code,0, 11);
 
-            if($this->hasValidCode($crate))
+
+            $possileCrate = $this->crateDatabase->getCrate($crate);
+            if (empty($possileCrate))
             {
-                $this->crateDatabase->newCrate($crate, $size, $owner, $crateType, $cratePosition);
-                $message = "<p><mark>". $crate ." was added</mark></p>";
-            }else {
-                $message = "<p><mark>". $crate ." is <b>not</b> a valid BIC Code!</mark></p>";
+                if($this->hasValidCode($crate))
+                {
+                    $this->crateDatabase->newCrate($crate, $size, $owner, $crateType, $cratePosition);
+                    $message = "<p><mark>". $crate ." was added</mark></p>";
+                }else {
+                    $message = "<p><mark>". $crate ." is <b>not</b> a valid BIC Code!</mark></p>";
+                }
+            } else {
+                $message = "<p><mark>". $crate ." already exists</mark></p>";
             }
         }
+
         $crates = $this->crateDatabase->getCrates();
         $this->pageload("crate", "crates", [
             'crates' => $crates,
@@ -129,4 +137,18 @@ class CrateController extends AbstractController
         $owner .= $checkDigit;
         return $owner;
     }
+
+    public function AjaxUpdateCrateTable()
+    {
+        if (isset($_POST['code']))
+        {
+            $value = $_POST['value'];
+            $column = $_POST['column'];
+            $code = $_POST['code'];
+
+            $this->crateDatabase->updateCrate($value, $column, $code);
+        }
+    }
+
+
 }
