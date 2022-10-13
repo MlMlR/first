@@ -15,6 +15,7 @@ use App\apps\PHPMailer\SMTP;
 use App\apps\Register\MVC\LoginAuthenticator;
 use App\apps\Register\MVC\RegisterController;
 use App\apps\Register\SecurityLoginDatabase;
+use App\apps\truck\MVC\TruckController;
 use App\apps\User\MVC\UserController;
 use App\apps\User\UserDatabase;
 
@@ -45,6 +46,10 @@ class Container {
             'errorController' => function()
             {
                 return new ErrorController();
+            },
+            'truckController' => function()
+            {
+                return new TruckController();
             },
             'homeController' => function()
             {

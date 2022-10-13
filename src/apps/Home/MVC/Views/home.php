@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . "./../../../../navbar.php"; ?>
 
 
 <div class="container col col-12">
