@@ -2,10 +2,9 @@
 
 session_start();
 
+require_once "init.php";
 
 require_once "header.php";
-require_once "init.php";
-require_once "navbar.php";
 
 
 $router = $Container->build("router");
@@ -22,6 +21,10 @@ switch ($request)
         $router->add("homeController", "home");
         break;
 
+    case "Truck":
+        $router->add("truckController", "play");
+        break;
+
     case "crateMill":
         $router->add("crateController", "viewCrateMill");
         break;
@@ -31,7 +34,6 @@ switch ($request)
         break;
 
     case "updateCrateTable":
-        echo "gugug";
         $router->add("crateController", "AjaxUpdateCrateTable");
         break;
     case "Users":

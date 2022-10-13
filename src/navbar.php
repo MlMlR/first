@@ -31,6 +31,9 @@
                     <a class="nav-link " href="/?App=Users" tabindex="-1" aria-disabled="true">Creatures</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link " href="./apps/truck/MVC/Views/game.php" tabindex="-1" aria-disabled="true">Truck</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link " href="/?App=Logout" tabindex="-1" aria-disabled="true">go</a>
                 </li>
             </ul>
