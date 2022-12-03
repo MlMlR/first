@@ -19,10 +19,11 @@ class CrateDatabase extends AbstractDatabase
         return CrateModel::class;
     }
 
-    function getCrates(){
+    function getCrates($ordering = 'code', $sort = 'ASC'){
         $model = $this->getModel();
         if (!empty( $this->pdo)){
-            $crates =  $this->pdo->prepare("SELECT * FROM `container_management`");
+            $query = "SELECT * FROM `container_management` ORDER BY $ordering $sort";
+            $crates =  $this->pdo->prepare($query);
             $crates->execute();
             $crates->setFetchMode(PDO::FETCH_CLASS, $model);
             $cratedata = $crates->fetchAll();

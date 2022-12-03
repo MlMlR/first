@@ -2,6 +2,7 @@
 
 namespace App\apps\Util;
 
+use App\apps\AdventOfCode\MVC\AdventofCodeController;
 use App\apps\Connections\ConMySQL;
 use App\apps\crate\CrateDatabase;
 use App\apps\crate\MVC\CrateController;
@@ -46,6 +47,10 @@ class Container {
             'errorController' => function()
             {
                 return new ErrorController();
+            },
+            'adventofCodeController' => function()
+            {
+                return new AdventofCodeController();
             },
             'truckController' => function()
             {

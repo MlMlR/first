@@ -72,7 +72,13 @@ class CrateController extends AbstractController
             }
         }
 
-        $crates = $this->crateDatabase->getCrates();
+        $ordering = $_GET['ordering'] ?? 'code';
+
+        $sort = $_GET['sort'] ?? 'ASC';
+
+
+
+        $crates = $this->crateDatabase->getCrates($ordering, $sort);
         $this->pageload("crate", "crates", [
             'crates' => $crates,
             'message' => $message

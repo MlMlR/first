@@ -36,6 +36,11 @@ switch ($request)
     case "updateCrateTable":
         $router->add("crateController", "AjaxUpdateCrateTable");
         break;
+
+    case "advent":
+        $router->add("adventofCodeController", "showResult");
+        break;
+
     case "Users":
         $router->add("userController", "allUsers");
         break;

@@ -10,15 +10,15 @@ const networkCtx = networkCanvas.getContext("2d");
 
 const road = new Road(carCanvas.width/2, carCanvas.width*0.9);
 
-const N = 500;
-const cars = generateCars(N);
+const N = 1111;
+let cars = generateCars(N);
 let bestCar = cars[0];
 if (localStorage.getItem("bestBrain")){
     for (let i = 0; i < cars.length; i++) {
         cars[i].brain = JSON.parse(
             localStorage.getItem("bestBrain"));
         if (i !== 0){
-            NeuralNetwork.mutate(cars[i].brain, 0.15);
+            NeuralNetwork.mutate(cars[i].brain, 0.025);
         }
     }
 }
@@ -67,12 +67,25 @@ function spliceCars() {
     }
 }
 
+function replaceDeadCars(){
+    for (let i = 0; i < cars.length; i++) {
+        if (cars[i].damaged){
+            cars[i] = cloneCar();
+        }
+    }
+}
+
 function cloneCar(){
     let newCar = new Car(bestCar.x, bestCar.y, 30, 50, "AI",)
-    newCar.brain = bestCar.brain;
-    NeuralNetwork.mutate(newCar.brain, 0.25);
+    if (localStorage.getItem("bestBrain")){
+        newCar.brain = JSON.parse(
+            localStorage.getItem("bestBrain"));
+    } else {
+        newCar.brain = bestCar.brain;
+    }
+    NeuralNetwork.mutate(newCar.brain, 0.125);
 
-    cars.push(newCar);
+    return newCar
 }
 
 function generateCars(N){
@@ -88,6 +101,7 @@ function animate(time){
         traffic[i].update(road.borders, []);
     }
 
+    spliceCars();
 
     if (cars.length < N){
         cloneCar();
