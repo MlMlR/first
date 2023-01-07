@@ -1,0 +1,37 @@
+body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    background-color: black;
+}
+
+#game-board {
+    background-color: #fecd1a;
+    width: 500px;
+    height: 500px;
+    display: grid;
+    grid-template-rows: repeat(21, 1fr);
+    grid-template-columns: repeat(21, 1fr);
+}
+
+.snake {
+    background-color: #D9261C;
+    background-image: url("images/bertschilogo.ico");
+    background-size: cover;
+
+}
+
+.bug {
+    background-image: url("images/bug.ico");
+    background-size: cover;
+
+}
+
+.food {
+
+    background-image: url("images/Container.ico");
+    background-size: cover;
+}
