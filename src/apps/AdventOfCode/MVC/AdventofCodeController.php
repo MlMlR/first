@@ -3,15 +3,630 @@
 namespace App\apps\AdventOfCode\MVC;
 
 use App\apps\Util\AbstractMVC\AbstractController;
+use function MongoDB\BSON\toJSON;
 
 class AdventofCodeController extends AbstractController
 {
 
     public function showResult()
     {
-        $this->day11();
+        var_dump(strtotime('this monday'));
+        //$this->day15b();
     }
-    //20 rounds
+
+    public function day15b(){
+        $input = file(__DIR__ . "/Input2022/day15_2022.txt", FILE_IGNORE_NEW_LINES);
+        // 6653408074950 to low
+        //echo "<pre>";
+
+        $sensors =[];
+        $beacons =[];
+        $numberOfSensors = count($input);
+
+        for ($i = 0; $i< count($input); $i++)
+        {
+            $words  = explode(" ", $input[$i]);
+            $sensors[$i][] = intval(substr($words[2], 2, (strlen($words[2])-3)));
+            $sensors[$i][] = intval(substr($words[3], 2, (strlen($words[3])-3)));
+            $beacons[$i][] = intval(substr($words[8], 2, (strlen($words[8])-3)));
+            $beacons[$i][] = intval(substr($words[9], 2));
+
+            var_dump($sensors[$i]);
+            echo "<br>";
+            var_dump($beacons[$i]);
+            echo "<br>";
+            echo "<br>";
+        }
+
+
+        $range = 4000000;
+
+        for ($i = 0; $i<= $range;$i++)
+        {
+            $theLine = $i;
+            $intervals = [];
+
+            for ($j = 0; $j< $numberOfSensors;$j++)
+            {
+                // Sensor at x=2, y=18: closest beacon is at x=-2, y=15
+                $xs = $sensors[$j][0];
+                $ys = $sensors[$j][1];
+                $xb = $beacons[$j][0];
+                $yb = $beacons[$j][1];
+
+                //echo "Sensor. $xs,$ys Beacon: $xb,$yb <br>";
+
+                $totdist = max($ys, $yb) - min($ys, $yb);
+                $totdist += max($xs, $xb) - min($xs, $xb);
+                //echo "tot dist: $totdist <br>";
+
+                $xdist = $totdist - (max($ys, $theLine) - min($ys, $theLine));
+                //echo "x dist: $xdist <br>";
+
+                if ($xdist <= 0)
+                {
+                    continue;
+                }
+                $xl = $xs-$xdist;
+                $xr = $xs+$xdist;
+                $intervals[] = [$xl,$xr];
+                //echo "yl: $xl yr. $xr <br>";
+            }
+            //echo "the line;" . $i . "<br>";
+
+            array_multisort($intervals);
+            //print_r($intervals);
+            if ($intervals[0][0] > 0){
+                echo "x: $theLine y; 0"  . " t f<br>";
+            }
+
+
+            for($k = 1; $k < count($intervals); $k++)
+            {
+                if(($intervals[0][1])+1 >= $intervals[$k][0])
+                {
+                    if($intervals[0][1] < $intervals[$k][1])
+                    {
+                        $intervals[0][1] = $intervals[$k][1];
+                    }
+                }
+                elseif ($intervals[0][1] < $range+1)
+                {
+                    echo "y: $theLine x; " . ($intervals[0][1] +1) . " res: " . (4000000 * ($intervals[$k-1][1] +1) + $theLine) . "<br>";
+                    break;
+                }
+            }
+
+            if ($intervals[0][1] < $range +1){
+                echo "y: $theLine x; " . ($intervals[0][1] +1) . " res: " . (4000000 * ($intervals[$k-1][1] +1) + $theLine) . "<br>";
+                break;
+            }
+        }
+    }
+
+
+    public function day15(){
+        $input = file(__DIR__ . "/Input2022/day15_2022.txt", FILE_IGNORE_NEW_LINES);
+
+        // In the row where y=2000000, how many positions cannot contain a beacon? y=10 for test.
+
+        $y10 = [];
+        $theLine = 2000000;
+        $beaconsOnLine =[];
+
+        $xl = null;
+        $xr = null;
+
+        foreach ($input as $line)
+        {
+            echo "<br>";
+            // Sensor at x=2, y=18: closest beacon is at x=-2, y=15
+            $words  = explode(" ", $line);
+            $xs = intval(substr($words[2], 2, (strlen($words[2])-3)));
+            $ys = intval(substr($words[3], 2, (strlen($words[3])-3)));
+            $xb = intval(substr($words[8], 2, (strlen($words[8])-3)));
+            $yb = intval(substr($words[9], 2));
+
+            if($yb == $theLine)
+            {
+                if(!in_array($xb, $beaconsOnLine))
+                {
+                    $beaconsOnLine[] = $xb;
+                }
+            }
+
+            echo "Sensor. $xs,$ys Beacon: $xb,$yb <br>";
+
+            $totdist = max($ys, $yb) - min($ys, $yb);
+            $totdist += max($xs, $xb) - min($xs, $xb);
+            echo "tot dist: $totdist <br>";
+
+            $xdist = $totdist - (max($ys, $theLine) - min($ys, $theLine));
+            echo "x dist: $xdist <br>";
+
+            if ($xdist <= 0)
+            {
+                continue;
+            }
+
+            if($xl == null)
+            {
+                $xl = $xs-$xdist;
+                $xr = $xs+$xdist;
+            }
+            if ($xs-$xdist < $xl)
+            {
+                $xl = $xs-$xdist;
+            }
+            if ($xr < $xs+$xdist)
+            {
+                $xr = $xs+$xdist;
+            }
+
+            echo "yl: $xl yr. $xr <br>";
+
+        }
+
+        $res = $xr - $xl;
+
+
+        echo "<br>" . $res;
+    }
+
+
+    public function day14(){
+        $input = file(__DIR__ . "/Input2022/day14_2022.txt", FILE_IGNORE_NEW_LINES);
+        // 498,4 -> 498,6 -> 496,6
+        // 702 to low
+        // lowest: 163
+
+        //25500?
+
+        $rocks = [];
+        for ($x = 0; $x < 1000; $x++)
+        {
+            for($y = 0; $y <= 1000; $y++)
+            {
+                $rocks[$x][$y] = true;
+            }
+            $rocks[$x][165] = false;
+        }
+        $lowestRockY = 0;
+        $unitsOfSand = 0;
+
+        foreach ($input as $line)
+        {
+            $corners = explode(" -> ", $line);
+            $xyStart = explode(",", $corners[0]);
+            $xStart = $xyStart[0];
+            $yStart = $xyStart[1];
+
+            if( $yStart > $lowestRockY)
+            {
+                $lowestRockY = $yStart;
+            }
+
+
+            // add all the rocks to an array
+            for ($i = 1; $i < count($corners); $i++)
+            {
+                $xyEnd = explode(",", $corners[$i]);
+                $xEnd = $xyEnd[0];
+                $yEnd = $xyEnd[1];
+
+                if( $yEnd > $lowestRockY)
+                {
+                    $lowestRockY = $yEnd;
+                }
+
+                if($xStart == $xEnd)
+                {
+                    for($j = min($yStart, $yEnd); $j <= max($yStart, $yEnd); $j++)
+                    {
+                        $rocks[$xStart][$j] = false;
+                    }
+                }
+                else if ($yEnd == $yStart)
+                {
+                    for ($k = min($xStart, $xEnd); $k <= max($xStart, $xEnd); $k++)
+                    {
+                        $rocks[$k][$yStart] = false;
+                    }
+                }
+                else
+                {
+                    echo "WTF 1";
+                }
+                $xStart = $xEnd;
+                $yStart = $yEnd;
+            }
+        }
+
+        echo "<br>";
+        echo "lowest: ";
+        echo $lowestRockY;
+        echo "<br>";
+        echo "<br>";
+
+
+        $hasSpace = true;
+
+        while($hasSpace)
+        {
+            $sandX = 500;
+            $sandY = 0;
+
+            $freeSand = true;
+
+            while ($freeSand)
+            {
+                if ($rocks[$sandX][$sandY+1])
+                {
+                    $sandY++;
+
+                    if($sandY > $lowestRockY)
+                    {
+                        echo "went low!" . $unitsOfSand . "<br>";
+                    }
+                }
+                elseif ($rocks[$sandX-1][$sandY+1])
+                {
+                    $sandY++;
+                    $sandX--;
+                }
+                elseif ($rocks[$sandX+1][$sandY+1])
+                {
+                    $sandY++;
+                    $sandX++;
+                }
+                else
+                {
+                    $rocks[$sandX][$sandY] = false;
+                    $unitsOfSand++;
+                    $freeSand = false;
+                    if (!$rocks[500][0])
+                    {
+                        echo $unitsOfSand;
+                        echo "<br>";
+                        $hasSpace = false;
+                        break;
+                    }
+                }
+            }
+
+        }
+    }
+
+
+    public function day13b(){
+        $lines = [];
+        $input = file(__DIR__ . "/Input2022/day13_2022.txt", FILE_IGNORE_NEW_LINES);
+        foreach ($input as $item) {
+            if($item != ""){
+                $lines[] = json_decode($item);
+            }
+        }
+
+        $x2 = 1;
+        $x6 = 2;
+
+        for ($ii = 0; $ii < count($lines); $ii++) {
+            echo "checking " . $ii;
+            echo "<br>";
+            if ($this->compareArrays($lines[$ii], [[2]])) {
+                echo "smaler than [[2]] ";
+                echo "<br>";
+                $x2++;
+                $x6++;
+            } else if ($this->compareArrays($lines[$ii], [[6]])) {
+                echo "smaler than [[6]] ";
+                echo "<br>";
+                $x6++;
+            }
+            echo "x2. " . $x2;
+            echo "<br>";
+            echo "x6. " . $x6;
+            echo "<br>";
+        }
+        echo "decoder key. " . ($x2*$x6);
+    }
+
+    public function day13(){
+        $pairs = [];
+        $input = file(__DIR__ . "/Input2022/test.txt", FILE_IGNORE_NEW_LINES);
+        $x = 0;
+        foreach ($input as $item) {
+            if($item != ""){
+                $pairs[$x][] = json_decode($item);
+            } else {
+                $x ++;
+            }
+        }
+
+        $res = 0;
+
+        for ($ii = 0; $ii < count($pairs); $ii++) {
+            echo "checking " . $ii;
+            echo "<br>";
+            if ($this->compareArrays($pairs[$ii][0], $pairs[$ii][1])) {
+                echo "added " . ($ii+1);
+                echo "<br>";
+                $res += $ii + 1;
+            }
+            echo "res " . $res;
+            echo "<br>";
+            echo "<br>";
+        }
+        echo $res;
+    }
+
+
+    public function compareArrays($left, $right): ?bool
+    {
+        // If both values are integers, compare them
+        if (is_int($left) && is_int($right)) {
+            return $left < $right;
+        }
+
+        // If both values are lists, compare them element by element
+        if (is_array($left) && is_array($right)) {
+            for ($i = 0; $i < count($left) && $i < count($right); $i++) {
+                if ($this->compareArrays($left[$i], $right[$i])) {
+                    return true;
+                } elseif ($this->compareArrays($right[$i], $left[$i])) {
+                    return false;
+                }
+            }
+            return count($left) < count($right);
+        }
+
+        // If exactly one value is an integer, convert it to a list and compare again
+        if (is_int($left)) {
+            return $this->compareArrays([$left], $right);
+        } elseif (is_int($right)) {
+            return $this->compareArrays($left, [$right]);
+        }
+
+        // If none of the above conditions are met, the inputs are not comparable
+        echo "wtf!!";
+        return null;
+    }
+
+
+
+    public function day12()
+    {
+        $input = file(__DIR__ . "/Input2022/day12_2022.txt", FILE_IGNORE_NEW_LINES);
+
+        $height = count($input);
+        echo $height . "<br>";
+        $width = strlen($input[0]);
+        echo $width . "<br>";
+        $tbd = [];
+        $seen = [];
+        $map = [];
+
+        foreach ($input as $row => $data)
+        {
+            $data = str_split($data);
+            foreach ($data as $column => $value)
+            {
+                if($value == "E")
+                {
+                    $tbd[] = $start = [0, $row, $column];
+//                    echo "row: $row col: $column val: $value";
+                    $input[$row][$column] = "z";
+                    $seen[] = $row . "-" . $column;
+                    $map[$row][$column] = ord("z") - 96;
+                }
+                elseif ($value == "S")
+                {
+                    $frow = $row;
+                    $fcol = $column;
+                    $input[$row][$column] = "a";
+                    $map[$row][$column] = ord("a") - 96;
+                }
+                else
+                {
+                    $map[$row][$column] = ord($value) - 96;
+                }
+            }
+        }
+
+        foreach ($map as $row => $data) {
+            foreach ($data as $column => $value) {
+                echo $value . " ";
+            }
+            echo "<br>";
+        }
+        $onTheWay = true;
+
+        var_dump($tbd);
+        echo "<br>";
+
+        echo $frow . "," . $fcol . "<br>";
+
+        while($onTheWay)
+        {
+            $step = array_shift($tbd);
+            $row = $step[1];
+            $column = $step[2];
+            $count = $step[0];
+
+            echo "v:".$map[$row][$column]." x:y: ( ".$row.",".$column." ) c:". $count . " <br>";
+
+            echo "left<br>";
+            if($column > 0)
+            {
+                if(!in_array($row . "-" . ($column -1), $seen))
+                {
+                    if($map[$row][$column-1] >= ($map[$row][$column] -1))
+                    {
+                        if($map[$row][$column-1] == 1)
+                        {
+                            echo "<br>" . ($count+1) . "made it!<br>";
+                            $onTheWay = false;
+                        }
+                        $tbd[] =[$count+1, $row, $column - 1];
+                        echo "added<br>";
+                        $seen[] = $row . "-" . ($column - 1);
+                    }
+                }
+            }
+
+            echo "right<br>";
+            if($column < $width-1)
+            {
+                if(!in_array($row . "-" . ($column +1), $seen))
+                {
+                    if($map[$row][$column+1] >= ($map[$row][$column] - 1))
+                    {
+                        if($map[$row][$column+1] == 1)
+                        {
+                            echo "<br>" . ($count+1) . " made it!<br>";
+                            $onTheWay = false;
+                        }
+                        $tbd[] =[$count+1, $row, $column+1];
+                        echo "added<br>";
+                        $seen[] = $row . "-" . ($column +1);
+                    }
+                }
+            }
+
+            echo "up<br>";
+            if($row > 0)
+            {
+                if(!in_array(($row-1) . "-" . $column, $seen))
+                {
+                    if($map[$row-1][$column] >= ($map[$row][$column] -1))
+                    {
+                        if($map[$row-1][$column] == 1)
+                        {
+                            echo "<br>" . ($count + 1) . "made it!<br>";
+                            $onTheWay = false;
+                        }
+                        $tbd[] =[$count + 1, $row - 1, $column];
+                        echo "added<br>";
+                        $seen[] = (($row-1) . "-" . $column);
+                    }
+                }
+            }
+
+            echo "down<br>";
+            if($row < $height-1)
+            {
+                if(!in_array(($row+1) . "-" . $column, $seen))
+                {
+                    if($map[$row+1][$column] >= $map[$row][$column] -1)
+                    {
+                        if($map[$row+1][$column] == 1)
+                        {
+                            echo "<br>" . ($count+1) . "made it!<br>";
+                            $onTheWay = false;
+                        }
+                        $tbd[] =[$count+1, $row+1, $column];
+                        echo "added<br>";
+                        $seen[] = (($row+1) . "-" . $column);
+                    }
+                }
+            }
+        }
+
+
+//        while($onTheWay)
+//        {
+//            $step = array_shift($tbd);
+//            $y = $step[1];
+//            $x = $step[2];
+//            $count = $step[0];
+//
+//            echo "v:".$input[$x][$y]." x:y: ( ".$x.",".$y." ) c:". $count . " <br>";
+//
+//            echo "up<br>";
+//            if($x > 0)
+//            {
+//                if(!in_array($x-1 . "-" . $y, $seen))
+//                {
+//                        if(ord($input[$x-1][$y]) <= ord($input[$x][$y])+1)
+//                    {
+//                        if($x-1 == $fx && $y == $fy)
+//                        {
+//                            echo $count+1;
+//                            $onTheWay = false;
+//                        }
+//                        echo "added<br>";
+//                        $tbd[] =[$count+1, $x-1, $y];
+//                        $seen[] = $x-1 . "-" . $y;
+//                    }
+//                }
+//            }
+//
+//            echo "left<br>";
+//
+//            if($y > 0)
+//            {
+//                if(!in_array($x . "-" . $y-1, $seen))
+//                {
+//                    if(ord($input[$x][$y-1]) <= ord($input[$x][$y])+1)
+//                    {
+//                        if($x == $fx && $y-1 == $fy)
+//                        {
+//                            echo $count+1;
+//                            $onTheWay = false;
+//                        }
+//                        echo "added<br>";
+//                        $tbd[] =[$count+1, $x, $y-1];
+//                        $seen[] = $x . "-" . $y-1;
+//
+//                    }
+//                }
+//            }
+//
+//            echo "down<br>";
+//            if($x < $height-1)
+//            {
+//                if(!in_array($x+1 . "-" . $y, $seen))
+//                {
+//                    if(ord($input[$x+1][$y]) <= (ord($input[$x][$y]) + 1))
+//                    {
+//                        if($x+1 == $fx && $y == $fy)
+//                        {
+//                            echo $count;
+//                            $onTheWay = false;
+//                        }
+//                        echo "added<br>";
+//                        $tbd[] =[$count+1, $x+1, $y];
+//                        $seen[] = $x+1 . "-" . $y;
+//
+//                    }
+//                }
+//            }
+//
+//            echo "right<br>";
+//            if($y < $width-1)
+//            {
+//                if(!in_array($x . "-" . $y+1, $seen))
+//                {
+//
+//                    if(ord($input[$x][$y+1]) <= (ord($input[$x][$y]) + 1))
+//                    {
+//                        if($x == $fx && $y+1 == $fy)
+//                        {
+//                            echo $count+1;
+//                            $onTheWay = false;
+//                        }
+//                        echo "added<br>";
+//                        $tbd[] =[$count+1, $x, $y+1];
+//                        $seen[] = $x . "-" . $y+1;
+//
+//                    }
+//                }
+//            }
+//            echo "<br>";
+//
+//            //echo "<br>";
+//        }
+    }
 
     public function day11()
     {
